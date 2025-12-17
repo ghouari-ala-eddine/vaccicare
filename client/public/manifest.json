@@ -1,0 +1,45 @@
+{
+    "name": "VacciCare - Gestion de Vaccination",
+    "short_name": "VacciCare",
+    "description": "Application de gestion de vaccination des enfants pour les institutions de santé",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#1a1a2e",
+    "theme_color": "#3498db",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "icons": [
+        {
+            "src": "/icons/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "/icons/icon.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "maskable"
+        }
+    ],
+    "categories": [
+        "health",
+        "medical"
+    ],
+    "lang": "fr",
+    "dir": "auto",
+    "shortcuts": [
+        {
+            "name": "Rendez-vous",
+            "short_name": "RDV",
+            "description": "Voir mes rendez-vous",
+            "url": "/appointments"
+        },
+        {
+            "name": "Mes Enfants",
+            "short_name": "Enfants",
+            "description": "Gérer mes enfants",
+            "url": "/children"
+        }
+    ]
+}

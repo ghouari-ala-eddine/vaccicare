@@ -1,0 +1,255 @@
+.lab-results-section {
+    margin-top: 30px;
+    padding: 25px;
+    background: linear-gradient(135deg, #f0f8ff 0%, #fff 100%);
+    border-radius: 16px;
+    border: 1px solid #e0e8f0;
+}
+
+.lab-results-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.lab-results-section h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #1a1a2e;
+}
+
+.lab-results-loading {
+    text-align: center;
+    padding: 30px;
+}
+
+/* Upload Form */
+.lab-upload-form {
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #fff;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-hint {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 5px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+/* No Results */
+.no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+}
+
+.no-results span {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Results List */
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.result-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    align-items: flex-start;
+}
+
+/* Doctor Comments in Card */
+.result-doctor-comments {
+    width: 100%;
+    background: #e8f5e9;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border-left: 4px solid #2ecc71;
+    margin-top: 5px;
+}
+
+.result-doctor-comments strong {
+    color: #1a1a2e;
+    font-size: 0.9rem;
+}
+
+.result-doctor-comments p {
+    margin: 5px 0 0 0;
+    color: #333;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.result-icon {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e8f4fc 0%, #f0e6f6 100%);
+    border-radius: 12px;
+}
+
+.result-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.result-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    color: #1a1a2e;
+}
+
+.result-meta {
+    display: flex;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.result-description {
+    margin: 8px 0 0 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.result-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* Status Badges */
+.status-badge {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-reviewed {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-normal {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-abnormal {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* File Preview */
+.file-preview {
+    max-width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.file-preview img {
+    max-width: 100%;
+    max-height: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.file-preview iframe {
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+/* Doctor Comments */
+.doctor-comments {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary, #3498db);
+}
+
+.doctor-comments h4 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.doctor-comments p {
+    margin: 0;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Modal Large */
+.modal-lg {
+    max-width: 800px;
+    width: 90%;
+}
+
+/* RTL Support */
+.rtl .doctor-comments {
+    border-left: none;
+    border-right: 4px solid var(--primary, #3498db);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .lab-results-section {
+        padding: 15px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .result-card {
+        flex-direction: column;
+    }
+
+    .result-actions {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .action-buttons {
+        flex-wrap: wrap;
+    }
+}

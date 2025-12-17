@@ -1,0 +1,564 @@
+.children-page,
+.child-detail-page,
+.add-child-page {
+    padding: var(--spacing-xl) 0;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.page-header h1 {
+    margin-bottom: var(--spacing-xs);
+}
+
+.page-breadcrumb {
+    margin-bottom: var(--spacing-lg);
+}
+
+.page-breadcrumb a {
+    color: var(--primary-500);
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+.page-breadcrumb a:hover {
+    color: var(--primary-600);
+}
+
+/* Empty State Large */
+.empty-state-large {
+    text-align: center;
+    padding: var(--spacing-2xl) var(--spacing-xl);
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.empty-state-large .empty-icon {
+    font-size: 5rem;
+    display: block;
+    margin-bottom: var(--spacing-lg);
+}
+
+.empty-state-large h2 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.empty-state-large p {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Children Grid */
+.children-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.child-card-large {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    display: block;
+}
+
+.child-card-large:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.child-header {
+    background: var(--bg-gradient);
+    padding: var(--spacing-xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.child-avatar-large {
+    font-size: 4rem;
+    background: rgba(255, 255, 255, 0.2);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+}
+
+.child-body {
+    padding: var(--spacing-lg);
+}
+
+.child-body h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.child-meta p {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.meta-icon {
+    font-size: 1rem;
+}
+
+.child-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.child-footer {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-top: 1px solid var(--gray-100);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.view-link {
+    color: var(--primary-500);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.btn-delete {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-md);
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-size: 0.9rem;
+    transition: all var(--transition-fast);
+    border: 1px solid transparent;
+}
+
+.btn-delete:hover {
+    background: var(--danger-50);
+    color: var(--danger-500);
+    border-color: var(--danger-200);
+}
+
+.btn-delete.confirm {
+    background: var(--danger-500);
+    color: white;
+    animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0.7;
+    }
+}
+
+.profile-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+/* Add Child Form */
+.form-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-xl);
+}
+
+.child-form {
+    padding: var(--spacing-xl);
+}
+
+.form-section {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-section h3 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-primary);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+.gender-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+.gender-btn {
+    padding: var(--spacing-md);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+    background: var(--bg-secondary);
+}
+
+.gender-btn:hover {
+    border-color: var(--primary-300);
+}
+
+.gender-btn.active {
+    border-color: var(--primary-500);
+    background: var(--primary-50);
+    color: var(--primary-700);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+}
+
+.info-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.info-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.info-card h4 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.info-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.info-card ul {
+    list-style: none;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.info-card ul li {
+    padding: var(--spacing-xs) 0;
+    padding-left: var(--spacing-md);
+    position: relative;
+}
+
+.info-card ul li::before {
+    content: '💉';
+    position: absolute;
+    left: 0;
+    font-size: 0.75rem;
+}
+
+/* Child Detail Profile */
+.child-profile {
+    margin-bottom: var(--spacing-xl);
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--gray-100);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.profile-avatar {
+    font-size: 4rem;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-gradient);
+    border-radius: var(--radius-lg);
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-info h1 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.profile-age {
+    font-size: 1.1rem;
+    color: var(--primary-500);
+    font-weight: 600;
+}
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.profile-stat {
+    text-align: center;
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+}
+
+.profile-stat.success {
+    background: var(--success-50);
+}
+
+.profile-stat.danger {
+    background: var(--danger-50);
+}
+
+.stat-num {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.profile-stat.success .stat-num {
+    color: var(--success-500);
+}
+
+.profile-stat.danger .stat-num {
+    color: var(--danger-500);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.profile-medical {
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--gray-100);
+}
+
+.profile-medical h3 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.medical-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+}
+
+.medical-item {
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+}
+
+.medical-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.medical-value {
+    font-weight: 600;
+}
+
+/* Vaccination Section */
+.vaccination-section h2 {
+    margin-bottom: var(--spacing-lg);
+}
+
+.vaccination-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.vaccine-group {
+    padding: var(--spacing-lg);
+}
+
+.vaccine-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.vaccine-header h3 {
+    font-size: 1rem;
+}
+
+.dose-count {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.doses-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.dose-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    background: var(--gray-50);
+}
+
+.dose-item.completed {
+    background: var(--success-50);
+}
+
+.dose-item.delayed {
+    background: var(--danger-50);
+}
+
+.dose-number {
+    font-weight: 600;
+    min-width: 70px;
+}
+
+.dose-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dose-date {
+    font-size: 0.9rem;
+}
+
+.dose-doctor {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Doctor Notice */
+.doctor-notice {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--primary-50);
+    border: 1px solid var(--primary-200);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.doctor-notice span {
+    font-size: 1.5rem;
+}
+
+.doctor-notice p {
+    font-size: 0.9rem;
+    color: var(--primary-700);
+}
+
+/* Dose Actions */
+.dose-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-left: auto;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .form-container {
+        grid-template-columns: 1fr;
+    }
+
+    .info-panel {
+        order: -1;
+        flex-direction: row;
+    }
+
+    .info-card {
+        flex: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .children-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row,
+    .gender-selector {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
+    .info-panel {
+        flex-direction: column;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .medical-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dose-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

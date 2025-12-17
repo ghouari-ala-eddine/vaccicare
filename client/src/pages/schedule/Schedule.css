@@ -1,0 +1,265 @@
+.schedule-page {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.schedule-page .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.schedule-page h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #1a1a2e;
+}
+
+/* Add Slots Card */
+.add-slots-card {
+    padding: 25px;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, #f0f8ff 0%, #fff 100%);
+}
+
+.add-slots-card h3 {
+    margin: 0 0 20px 0;
+    color: #1a1a2e;
+}
+
+.slots-editor {
+    margin-top: 20px;
+}
+
+.slots-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.slots-header h4 {
+    margin: 0;
+    color: #333;
+}
+
+.no-slots-hint {
+    color: #888;
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.slots-list-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.slot-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.slot-row .form-select {
+    width: 120px;
+}
+
+.slot-separator {
+    color: #666;
+    font-weight: bold;
+}
+
+.quick-add-slots {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: #e8f4fc;
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.quick-add-slots span {
+    font-weight: 600;
+    color: #333;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* Schedules List */
+.schedules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.schedule-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.schedule-header h3 {
+    margin: 0;
+    color: #1a1a2e;
+    font-size: 1.2rem;
+}
+
+/* Slots Grid */
+.slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.slot-item {
+    padding: 12px 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.slot-item.available {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 1px solid #28a74570;
+}
+
+.slot-item.booked {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+    border: 1px solid #ffc10770;
+}
+
+.slot-time {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1a1a2e;
+}
+
+.slot-booking {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.booked-by {
+    font-size: 0.85rem;
+    color: #856404;
+}
+
+.available-badge {
+    font-size: 0.85rem;
+    color: #155724;
+    font-weight: 500;
+}
+
+.btn-xs {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+}
+
+/* Schedule Stats */
+.schedule-stats {
+    display: flex;
+    gap: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.schedule-stats .stat {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+.schedule-stats .stat.available {
+    background: #d4edda;
+    color: #155724;
+}
+
+.schedule-stats .stat.booked {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.empty-state span {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.empty-state p {
+    color: #666;
+    margin: 0;
+}
+
+/* RTL Support */
+.rtl .slot-separator {
+    transform: scaleX(-1);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .schedule-page .page-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .slot-row {
+        flex-wrap: wrap;
+    }
+
+    .slot-row .form-select {
+        width: 100%;
+    }
+
+    .quick-add-slots {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .slots-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .schedule-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

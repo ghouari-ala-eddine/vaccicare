@@ -1,0 +1,181 @@
+.appointments-page {
+    padding: var(--spacing-xl) 0;
+}
+
+.appointments-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.appointments-section h2 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.appointments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.appointment-card-full {
+    padding: 0;
+    overflow: hidden;
+}
+
+.apt-header {
+    background: var(--bg-gradient);
+    padding: var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.apt-date-block {
+    color: white;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.apt-day {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.apt-month {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.apt-body {
+    padding: var(--spacing-lg);
+}
+
+.apt-body h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.apt-time {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-500);
+    margin-bottom: var(--spacing-xs);
+}
+
+.apt-date-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.apt-parent,
+.apt-vaccines,
+.apt-doctor {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.apt-doctor {
+    color: var(--primary-600);
+    font-weight: 500;
+}
+
+.apt-actions {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-top: 1px solid var(--gray-100);
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.apt-actions .btn {
+    flex: 1;
+    min-width: 100px;
+}
+
+/* Doctors Section */
+.doctors-section {
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg);
+}
+
+.doctors-section h3 {
+    margin-bottom: var(--spacing-md);
+}
+
+.doctors-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.doctor-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--gray-100);
+}
+
+.doctor-avatar {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-100);
+    border-radius: var(--radius-full);
+}
+
+.doctor-info h4 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.doctor-specialty {
+    color: var(--primary-500);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.doctor-phone {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* Modal form row */
+.modal-body .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+    .appointments-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .apt-actions {
+        flex-direction: column;
+    }
+
+    .apt-actions .btn {
+        width: 100%;
+    }
+
+    .modal-body .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .doctors-list {
+        grid-template-columns: 1fr;
+    }
+}
