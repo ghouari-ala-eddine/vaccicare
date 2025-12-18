@@ -265,20 +265,35 @@ const ChatPage = () => {
     };
 
     // Audio Player Component
-    const AudioMessage = ({ audioData, duration }) => {
+    const AudioMessage = ({ audioData, duration: savedDuration }) => {
         const audioRef = useRef(null);
         const [isPlaying, setIsPlaying] = useState(false);
         const [progress, setProgress] = useState(0);
+        const [currentTime, setCurrentTime] = useState(0);
 
         const togglePlay = () => {
             if (audioRef.current) {
                 if (isPlaying) {
                     audioRef.current.pause();
                 } else {
-                    audioRef.current.play();
+                    audioRef.current.play().catch(e => console.error('Play error:', e));
                 }
                 setIsPlaying(!isPlaying);
             }
+        };
+
+        const handleTimeUpdate = (e) => {
+            const audio = e.target;
+            setCurrentTime(Math.floor(audio.currentTime));
+
+            // Try native duration first, fall back to saved duration
+            let totalDuration = audio.duration;
+            if (!isFinite(totalDuration) || totalDuration === 0) {
+                totalDuration = savedDuration || 1;
+            }
+
+            const percent = (audio.currentTime / totalDuration) * 100;
+            setProgress(Math.min(percent, 100));
         };
 
         return (
@@ -286,11 +301,9 @@ const ChatPage = () => {
                 <audio
                     ref={audioRef}
                     src={audioData}
-                    onEnded={() => { setIsPlaying(false); setProgress(0); }}
-                    onTimeUpdate={(e) => {
-                        const percent = (e.target.currentTime / e.target.duration) * 100;
-                        setProgress(isFinite(percent) ? percent : 0);
-                    }}
+                    preload="metadata"
+                    onEnded={() => { setIsPlaying(false); setProgress(0); setCurrentTime(0); }}
+                    onTimeUpdate={handleTimeUpdate}
                 />
                 <button className="audio-play-btn" onClick={togglePlay}>
                     {isPlaying ? '⏸️' : '▶️'}
@@ -301,7 +314,7 @@ const ChatPage = () => {
                     </div>
                 </div>
                 <span className="audio-duration">
-                    🎤 {duration > 0 ? formatDuration(duration) : '0:00'}
+                    {isPlaying ? formatDuration(currentTime) : `🎤 ${formatDuration(savedDuration || 0)}`}
                 </span>
             </div>
         );
