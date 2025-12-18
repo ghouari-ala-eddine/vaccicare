@@ -130,7 +130,7 @@ const ChatPage = () => {
 
     const startRecording = async () => {
         try {
-            console.log('🎤 Starting recording...');
+            console.log('🎤 Starting recording... V3');
             isCancelledRef.current = false;
             durationRef.current = 0;
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -139,46 +139,35 @@ const ChatPage = () => {
             audioChunksRef.current = [];
 
             mediaRecorder.ondataavailable = (event) => {
-                console.log('📦 Data available:', event.data.size);
+                console.log('📦 Data chunk:', audioChunksRef.current.length + 1);
                 if (event.data.size > 0 && !isCancelledRef.current) {
                     audioChunksRef.current.push(event.data);
+                    // Use chunk count as duration (chunks come every second)
+                    durationRef.current = audioChunksRef.current.length;
+                    setRecordingDuration(audioChunksRef.current.length);
                 }
             };
 
             mediaRecorder.onstop = async () => {
                 const finalDuration = durationRef.current;
-                console.log('⏹️ Recording stopped, cancelled:', isCancelledRef.current, 'duration:', finalDuration);
+                console.log('⏹️ Stopped, chunks:', audioChunksRef.current.length, 'duration:', finalDuration);
                 stream.getTracks().forEach(track => track.stop());
 
                 if (!isCancelledRef.current && audioChunksRef.current.length > 0) {
                     const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-                    console.log('📤 Sending voice message, size:', audioBlob.size, 'duration:', finalDuration);
+                    console.log('📤 Sending, size:', audioBlob.size, 'duration:', finalDuration);
                     await sendVoiceMessageWithDuration(audioBlob, finalDuration);
                 } else {
-                    console.log('🚫 Recording was cancelled, not sending');
+                    console.log('🚫 Cancelled, not sending');
                 }
             };
 
-            // Start timer FIRST before recording
+            // Start recording with 1-second chunks
             setIsRecording(true);
             setRecordingDuration(0);
-            durationRef.current = 0;
-
-            console.log('🕐 Setting up interval...');
-
-            const intervalId = window.setInterval(function () {
-                durationRef.current = durationRef.current + 1;
-                console.log('⏱️ TICK:', durationRef.current);
-                setRecordingDuration(durationRef.current);
-            }, 1000);
-
-            recordingIntervalRef.current = intervalId;
-            console.log('🕐 Interval set with ID:', intervalId);
-
-            // Then start recording
             mediaRecorder.start(1000);
 
-            console.log('✅ Recording started, interval ID:', recordingIntervalRef.current);
+            console.log('✅ Recording started V3');
         } catch (error) {
             console.error('❌ Error starting recording:', error);
             alert(t('chat.microphoneError') || 'Microphone access denied');
@@ -186,28 +175,20 @@ const ChatPage = () => {
     };
 
     const stopRecording = () => {
-        console.log('📤 Stop recording (send), duration:', durationRef.current);
+        console.log('📤 Stop recording V3, duration:', durationRef.current);
         if (mediaRecorderRef.current && isRecording) {
             isCancelledRef.current = false;
-            if (recordingIntervalRef.current) {
-                clearInterval(recordingIntervalRef.current);
-                recordingIntervalRef.current = null;
-            }
             mediaRecorderRef.current.stop();
             setIsRecording(false);
         }
     };
 
     const cancelRecording = () => {
-        console.log('❌ Cancel recording');
+        console.log('❌ Cancel recording V3');
         if (mediaRecorderRef.current && isRecording) {
             isCancelledRef.current = true;
             audioChunksRef.current = [];
             durationRef.current = 0;
-            if (recordingIntervalRef.current) {
-                clearInterval(recordingIntervalRef.current);
-                recordingIntervalRef.current = null;
-            }
             mediaRecorderRef.current.stop();
             setIsRecording(false);
             setRecordingDuration(0);
