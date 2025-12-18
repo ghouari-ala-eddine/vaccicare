@@ -245,11 +245,10 @@ const ChatPage = () => {
     };
 
     // Audio Player Component
-    const AudioMessage = ({ audioData, duration: savedDuration }) => {
+    const AudioMessage = ({ audioData, duration }) => {
         const audioRef = useRef(null);
         const [isPlaying, setIsPlaying] = useState(false);
-        const [currentTime, setCurrentTime] = useState(0);
-        const [audioDuration, setAudioDuration] = useState(savedDuration || 0);
+        const [progress, setProgress] = useState(0);
 
         const togglePlay = () => {
             if (audioRef.current) {
@@ -262,38 +261,27 @@ const ChatPage = () => {
             }
         };
 
-        const handleLoadedMetadata = () => {
-            if (audioRef.current && audioRef.current.duration && isFinite(audioRef.current.duration)) {
-                setAudioDuration(Math.round(audioRef.current.duration));
-            }
-        };
-
         return (
             <div className="audio-message">
                 <audio
                     ref={audioRef}
                     src={audioData}
-                    onEnded={() => setIsPlaying(false)}
-                    onTimeUpdate={(e) => setCurrentTime(e.target.currentTime)}
-                    onLoadedMetadata={handleLoadedMetadata}
+                    onEnded={() => { setIsPlaying(false); setProgress(0); }}
+                    onTimeUpdate={(e) => {
+                        const percent = (e.target.currentTime / e.target.duration) * 100;
+                        setProgress(isFinite(percent) ? percent : 0);
+                    }}
                 />
                 <button className="audio-play-btn" onClick={togglePlay}>
                     {isPlaying ? '⏸️' : '▶️'}
                 </button>
                 <div className="audio-waveform">
-                    <div className="waveform-bars">
-                        {[...Array(15)].map((_, i) => (
-                            <div key={i} className="waveform-bar" style={{
-                                height: `${20 + Math.random() * 60}%`,
-                                animationDelay: `${i * 0.05}s`
-                            }}></div>
-                        ))}
+                    <div className="audio-progress-bar">
+                        <div className="audio-progress" style={{ width: `${progress}%` }}></div>
                     </div>
                 </div>
                 <span className="audio-duration">
-                    {isPlaying
-                        ? formatDuration(Math.round(currentTime))
-                        : formatDuration(audioDuration)}
+                    🎤 {duration > 0 ? formatDuration(duration) : '0:00'}
                 </span>
             </div>
         );
