@@ -180,7 +180,9 @@ const ChatPage = () => {
     const sendVoiceMessage = async (audioBlob) => {
         if (!selectedConversation) return;
 
+        const duration = recordingDuration; // Capture duration before async operations
         setSendingMessage(true);
+
         try {
             const reader = new FileReader();
             reader.readAsDataURL(audioBlob);
@@ -189,7 +191,7 @@ const ChatPage = () => {
                 await chatAPI.sendMessage(selectedConversation._id, {
                     messageType: 'audio',
                     audioData: base64Audio,
-                    audioDuration: recordingDuration
+                    audioDuration: duration
                 });
                 setRecordingDuration(0);
                 await fetchMessages(selectedConversation._id);
