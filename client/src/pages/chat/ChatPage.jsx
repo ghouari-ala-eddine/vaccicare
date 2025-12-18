@@ -4,6 +4,9 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { chatAPI } from '../../services/api';
 import './Chat.css';
 
+// VERSION 2 - Timer fix
+console.log('🔵 ChatPage VERSION 2 loaded');
+
 const ChatPage = () => {
     const { user, isParent, isDoctor } = useAuth();
     const { t, language } = useLanguage();
