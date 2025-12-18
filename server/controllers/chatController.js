@@ -79,16 +79,20 @@ const getMessages = async (req, res) => {
     }
 };
 
-// @desc    Send a message
+// @desc    Send a message (text or voice)
 // @route   POST /api/chat/conversations/:id/messages
 // @access  Private
 const sendMessage = async (req, res) => {
     try {
         const { id } = req.params;
-        const { content } = req.body;
+        const { content, messageType = 'text', audioData, audioDuration } = req.body;
 
-        if (!content || !content.trim()) {
+        // Validate based on message type
+        if (messageType === 'text' && (!content || !content.trim())) {
             return res.status(400).json({ message: 'Le message ne peut pas être vide' });
+        }
+        if (messageType === 'audio' && !audioData) {
+            return res.status(400).json({ message: 'Audio data is required for voice messages' });
         }
 
         // Check if user is participant (use string comparison for ObjectIds)
@@ -105,13 +109,23 @@ const sendMessage = async (req, res) => {
             return res.status(403).json({ message: 'Accès non autorisé' });
         }
 
-        // Create message
-        const message = await Message.create({
+        // Create message based on type
+        const messageData = {
             conversation: id,
             sender: req.user._id,
-            content: content.trim(),
+            messageType,
             readBy: [req.user._id]
-        });
+        };
+
+        if (messageType === 'text') {
+            messageData.content = content.trim();
+        } else if (messageType === 'audio') {
+            messageData.audioData = audioData;
+            messageData.audioDuration = audioDuration || 0;
+            messageData.content = '🎤 Voice message'; // Fallback text for notifications
+        }
+
+        const message = await Message.create(messageData);
 
         // Update conversation
         conversation.lastMessage = message._id;

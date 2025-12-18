@@ -404,7 +404,9 @@ const ar = {
         selectDoctor: 'اختيار طبيب',
         noDoctors: 'لا يوجد أطباء متاحون',
         typePlaceholder: 'اكتب رسالتك...',
-        send: 'إرسال'
+        send: 'إرسال',
+        voiceMessage: 'رسالة صوتية',
+        microphoneError: 'تم رفض الوصول إلى الميكروفون'
     },
 
     // Doctor Notes

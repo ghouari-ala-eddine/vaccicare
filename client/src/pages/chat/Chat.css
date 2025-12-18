@@ -234,6 +234,13 @@
     border-top: 1px solid #eee;
 }
 
+.message-form {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+    align-items: center;
+}
+
 .chat-input .form-input {
     flex: 1;
     border-radius: 25px;
@@ -246,6 +253,135 @@
     height: 48px;
     padding: 0;
     font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.voice-btn {
+    background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+    color: white !important;
+}
+
+.voice-btn:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226) !important;
+}
+
+/* Recording Controls */
+.recording-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.1));
+    border-radius: 25px;
+    padding: 8px 15px;
+}
+
+.cancel-recording {
+    border-radius: 50% !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px;
+}
+
+.recording-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.recording-dot {
+    width: 12px;
+    height: 12px;
+    background: #e74c3c;
+    border-radius: 50%;
+    animation: pulse-recording 1s ease-in-out infinite;
+}
+
+@keyframes pulse-recording {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+    }
+}
+
+.recording-time {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #e74c3c;
+    font-family: monospace;
+}
+
+.send-recording {
+    border-radius: 50% !important;
+    width: 48px !important;
+    height: 48px !important;
+}
+
+/* Audio Message Player */
+.audio-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 200px;
+    max-width: 250px;
+}
+
+.audio-play-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.audio-play-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.audio-waveform {
+    flex: 1;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.waveform-bars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 100%;
+}
+
+.waveform-bar {
+    width: 3px;
+    background: currentColor;
+    opacity: 0.7;
+    border-radius: 2px;
+    transition: height 0.2s;
+}
+
+.message.sent .waveform-bar {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.message.received .waveform-bar {
+    background: var(--primary);
+}
+
+.audio-duration {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    font-family: monospace;
 }
 
 /* No Chat Selected */

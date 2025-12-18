@@ -17,6 +17,13 @@ const ChatPage = () => {
     const [showNewChat, setShowNewChat] = useState(false);
     const messagesEndRef = useRef(null);
 
+    // Voice recording state
+    const [isRecording, setIsRecording] = useState(false);
+    const [recordingDuration, setRecordingDuration] = useState(0);
+    const mediaRecorderRef = useRef(null);
+    const audioChunksRef = useRef([]);
+    const recordingIntervalRef = useRef(null);
+
     useEffect(() => {
         fetchConversations();
         if (isParent) {
@@ -45,6 +52,18 @@ const ChatPage = () => {
         return () => clearInterval(interval);
     }, [selectedConversation]);
 
+    // Cleanup recording on unmount
+    useEffect(() => {
+        return () => {
+            if (recordingIntervalRef.current) {
+                clearInterval(recordingIntervalRef.current);
+            }
+            if (mediaRecorderRef.current && isRecording) {
+                mediaRecorderRef.current.stop();
+            }
+        };
+    }, [isRecording]);
+
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -71,11 +90,8 @@ const ChatPage = () => {
 
     const fetchMessages = async (conversationId, silent = false) => {
         try {
-            console.log('Fetching messages for conversation:', conversationId);
             const data = await chatAPI.getMessages(conversationId);
-            console.log('Messages received:', data);
             setMessages(data);
-            // Refresh conversations to update unread counts
             if (!silent) {
                 fetchConversations();
             }
@@ -90,20 +106,107 @@ const ChatPage = () => {
 
         setSendingMessage(true);
         const messageToSend = newMessage.trim();
-        setNewMessage(''); // Clear input immediately for better UX
+        setNewMessage('');
 
         try {
-            await chatAPI.sendMessage(selectedConversation._id, messageToSend);
-            // Refresh messages from server to get the correct format
+            await chatAPI.sendMessage(selectedConversation._id, { content: messageToSend });
             await fetchMessages(selectedConversation._id);
-            fetchConversations(); // Update last message in list
+            fetchConversations();
         } catch (error) {
             console.error('Error sending message:', error);
-            setNewMessage(messageToSend); // Restore message on error
+            setNewMessage(messageToSend);
             alert(t('messages.error'));
         } finally {
             setSendingMessage(false);
         }
+    };
+
+    // Voice Recording Functions
+    const startRecording = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+            mediaRecorderRef.current = mediaRecorder;
+            audioChunksRef.current = [];
+
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    audioChunksRef.current.push(event.data);
+                }
+            };
+
+            mediaRecorder.onstop = async () => {
+                stream.getTracks().forEach(track => track.stop());
+                const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+                await sendVoiceMessage(audioBlob);
+            };
+
+            mediaRecorder.start();
+            setIsRecording(true);
+            setRecordingDuration(0);
+
+            recordingIntervalRef.current = setInterval(() => {
+                setRecordingDuration(prev => prev + 1);
+            }, 1000);
+
+        } catch (error) {
+            console.error('Error starting recording:', error);
+            alert(t('chat.microphoneError') || 'Microphone access denied');
+        }
+    };
+
+    const stopRecording = () => {
+        if (mediaRecorderRef.current && isRecording) {
+            mediaRecorderRef.current.stop();
+            setIsRecording(false);
+            if (recordingIntervalRef.current) {
+                clearInterval(recordingIntervalRef.current);
+            }
+        }
+    };
+
+    const cancelRecording = () => {
+        if (mediaRecorderRef.current && isRecording) {
+            mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+            setIsRecording(false);
+            setRecordingDuration(0);
+            if (recordingIntervalRef.current) {
+                clearInterval(recordingIntervalRef.current);
+            }
+            audioChunksRef.current = [];
+        }
+    };
+
+    const sendVoiceMessage = async (audioBlob) => {
+        if (!selectedConversation) return;
+
+        setSendingMessage(true);
+        try {
+            const reader = new FileReader();
+            reader.readAsDataURL(audioBlob);
+            reader.onloadend = async () => {
+                const base64Audio = reader.result;
+                await chatAPI.sendMessage(selectedConversation._id, {
+                    messageType: 'audio',
+                    audioData: base64Audio,
+                    audioDuration: recordingDuration
+                });
+                setRecordingDuration(0);
+                await fetchMessages(selectedConversation._id);
+                fetchConversations();
+                setSendingMessage(false);
+            };
+        } catch (error) {
+            console.error('Error sending voice message:', error);
+            alert(t('messages.error'));
+            setSendingMessage(false);
+        }
+    };
+
+    const formatDuration = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
     const handleStartConversation = async (doctorId) => {
@@ -139,6 +242,51 @@ const ChatPage = () => {
         });
     };
 
+    // Audio Player Component
+    const AudioMessage = ({ audioData, duration }) => {
+        const audioRef = useRef(null);
+        const [isPlaying, setIsPlaying] = useState(false);
+        const [currentTime, setCurrentTime] = useState(0);
+
+        const togglePlay = () => {
+            if (audioRef.current) {
+                if (isPlaying) {
+                    audioRef.current.pause();
+                } else {
+                    audioRef.current.play();
+                }
+                setIsPlaying(!isPlaying);
+            }
+        };
+
+        return (
+            <div className="audio-message">
+                <audio
+                    ref={audioRef}
+                    src={audioData}
+                    onEnded={() => setIsPlaying(false)}
+                    onTimeUpdate={(e) => setCurrentTime(e.target.currentTime)}
+                />
+                <button className="audio-play-btn" onClick={togglePlay}>
+                    {isPlaying ? '⏸️' : '▶️'}
+                </button>
+                <div className="audio-waveform">
+                    <div className="waveform-bars">
+                        {[...Array(15)].map((_, i) => (
+                            <div key={i} className="waveform-bar" style={{
+                                height: `${20 + Math.random() * 60}%`,
+                                animationDelay: `${i * 0.05}s`
+                            }}></div>
+                        ))}
+                    </div>
+                </div>
+                <span className="audio-duration">
+                    {formatDuration(duration || 0)}
+                </span>
+            </div>
+        );
+    };
+
     if (loading) {
         return (
             <div className="loading-overlay">
@@ -149,16 +297,13 @@ const ChatPage = () => {
     }
 
     return (
-        <div className="chat-page">
-            {/* Conversations Sidebar */}
+        <div className={`chat-page ${language === 'ar' ? 'rtl' : ''}`}>
+            {/* Sidebar */}
             <div className="chat-sidebar">
                 <div className="sidebar-header">
                     <h2>💬 {t('chat.title')}</h2>
                     {isParent && (
-                        <button
-                            className="btn btn-primary btn-sm"
-                            onClick={() => setShowNewChat(true)}
-                        >
+                        <button className="btn btn-primary btn-sm" onClick={() => setShowNewChat(true)}>
                             + {t('chat.new')}
                         </button>
                     )}
@@ -167,20 +312,13 @@ const ChatPage = () => {
                 <div className="conversations-list">
                     {conversations.length === 0 ? (
                         <div className="no-conversations">
-                            <span>💬</span>
+                            <span>💭</span>
                             <p>{t('chat.noConversations')}</p>
-                            {isParent && (
-                                <button
-                                    className="btn btn-primary btn-sm"
-                                    onClick={() => setShowNewChat(true)}
-                                >
-                                    {t('chat.startFirst')}
-                                </button>
-                            )}
                         </div>
                     ) : (
                         conversations.map(conv => {
                             const other = getOtherParticipant(conv);
+                            const unread = conv.unreadCount?.get?.(user?._id) || conv.unreadCount?.[user?._id] || 0;
                             return (
                                 <div
                                     key={conv._id}
@@ -195,17 +333,16 @@ const ChatPage = () => {
                                             {other?.role === 'doctor' ? 'Dr. ' : ''}{other?.name}
                                         </div>
                                         <div className="conv-preview">
-                                            {conv.lastMessage?.content?.substring(0, 30) || t('chat.noMessages')}
-                                            {conv.lastMessage?.content?.length > 30 ? '...' : ''}
+                                            {conv.lastMessage?.messageType === 'audio'
+                                                ? '🎤 Voice message'
+                                                : conv.lastMessage?.content || t('chat.noMessages')}
                                         </div>
                                     </div>
                                     <div className="conv-meta">
-                                        <span className="conv-time">
-                                            {conv.lastMessageAt && formatTime(conv.lastMessageAt)}
-                                        </span>
-                                        {conv.unreadCount > 0 && (
-                                            <span className="unread-badge">{conv.unreadCount}</span>
+                                        {conv.lastMessageAt && (
+                                            <span className="conv-time">{formatTime(conv.lastMessageAt)}</span>
                                         )}
+                                        {unread > 0 && <span className="unread-badge">{unread}</span>}
                                     </div>
                                 </div>
                             );
@@ -214,16 +351,15 @@ const ChatPage = () => {
                 </div>
             </div>
 
-            {/* Chat Area */}
+            {/* Main Chat Area */}
             <div className="chat-main">
                 {selectedConversation ? (
                     <>
-                        {/* Chat Header */}
                         <div className="chat-header">
                             <div className="chat-header-info">
-                                <span className="chat-avatar">
+                                <div className="chat-avatar">
                                     {getOtherParticipant(selectedConversation)?.role === 'doctor' ? '👨‍⚕️' : '👤'}
-                                </span>
+                                </div>
                                 <div>
                                     <h3>
                                         {getOtherParticipant(selectedConversation)?.role === 'doctor' ? 'Dr. ' : ''}
@@ -250,14 +386,20 @@ const ChatPage = () => {
                                     const senderId = msg.sender?._id || msg.sender;
                                     const userId = user?._id;
                                     const isSent = String(senderId) === String(userId);
-                                    console.log('Rendering message:', msg._id, 'sender:', senderId, 'user:', userId, 'isSent:', isSent);
                                     return (
                                         <div
                                             key={msg._id}
                                             className={`message ${isSent ? 'sent' : 'received'}`}
                                         >
                                             <div className="message-content">
-                                                {msg.content}
+                                                {msg.messageType === 'audio' ? (
+                                                    <AudioMessage
+                                                        audioData={msg.audioData}
+                                                        duration={msg.audioDuration}
+                                                    />
+                                                ) : (
+                                                    msg.content
+                                                )}
                                             </div>
                                             <div className="message-time">
                                                 {formatTime(msg.createdAt)}
@@ -270,23 +412,55 @@ const ChatPage = () => {
                         </div>
 
                         {/* Message Input */}
-                        <form className="chat-input" onSubmit={handleSendMessage}>
-                            <input
-                                type="text"
-                                className="form-input"
-                                placeholder={t('chat.typePlaceholder')}
-                                value={newMessage}
-                                onChange={(e) => setNewMessage(e.target.value)}
-                                disabled={sendingMessage}
-                            />
-                            <button
-                                type="submit"
-                                className="btn btn-primary"
-                                disabled={!newMessage.trim() || sendingMessage}
-                            >
-                                {sendingMessage ? '...' : '📤'}
-                            </button>
-                        </form>
+                        <div className="chat-input">
+                            {isRecording ? (
+                                <div className="recording-controls">
+                                    <button
+                                        className="btn btn-danger btn-sm cancel-recording"
+                                        onClick={cancelRecording}
+                                    >
+                                        ✕
+                                    </button>
+                                    <div className="recording-indicator">
+                                        <span className="recording-dot"></span>
+                                        <span className="recording-time">{formatDuration(recordingDuration)}</span>
+                                    </div>
+                                    <button
+                                        className="btn btn-primary send-recording"
+                                        onClick={stopRecording}
+                                        disabled={sendingMessage}
+                                    >
+                                        {sendingMessage ? '...' : '📤'}
+                                    </button>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleSendMessage} className="message-form">
+                                    <button
+                                        type="button"
+                                        className="btn btn-secondary voice-btn"
+                                        onClick={startRecording}
+                                        disabled={sendingMessage}
+                                    >
+                                        🎤
+                                    </button>
+                                    <input
+                                        type="text"
+                                        className="form-input"
+                                        placeholder={t('chat.typePlaceholder')}
+                                        value={newMessage}
+                                        onChange={(e) => setNewMessage(e.target.value)}
+                                        disabled={sendingMessage}
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary"
+                                        disabled={!newMessage.trim() || sendingMessage}
+                                    >
+                                        {sendingMessage ? '...' : '📤'}
+                                    </button>
+                                </form>
+                            )}
+                        </div>
                     </>
                 ) : (
                     <div className="no-chat-selected">

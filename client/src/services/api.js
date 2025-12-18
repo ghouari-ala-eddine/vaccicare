@@ -240,9 +240,9 @@ export const chatAPI = {
     getMessages: (conversationId, page = 1) =>
         apiCall(`/chat/conversations/${conversationId}/messages?page=${page}`),
 
-    sendMessage: (conversationId, content) => apiCall(`/chat/conversations/${conversationId}/messages`, {
+    sendMessage: (conversationId, messageData) => apiCall(`/chat/conversations/${conversationId}/messages`, {
         method: 'POST',
-        body: JSON.stringify({ content })
+        body: JSON.stringify(messageData)
     }),
 
     startConversation: (recipientId) => apiCall('/chat/conversations', {

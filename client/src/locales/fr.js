@@ -404,7 +404,9 @@ const fr = {
         selectDoctor: 'Choisir un médecin',
         noDoctors: 'Aucun médecin disponible',
         typePlaceholder: 'Écrivez votre message...',
-        send: 'Envoyer'
+        send: 'Envoyer',
+        voiceMessage: 'Message vocal',
+        microphoneError: 'Accès au microphone refusé'
     },
 
     // Doctor Notes
