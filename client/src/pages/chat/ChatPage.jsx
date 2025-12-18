@@ -137,8 +137,11 @@ const ChatPage = () => {
 
             mediaRecorder.onstop = async () => {
                 stream.getTracks().forEach(track => track.stop());
-                const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-                await sendVoiceMessage(audioBlob);
+                // Only send if we have audio data (not cancelled)
+                if (audioChunksRef.current.length > 0) {
+                    const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+                    await sendVoiceMessage(audioBlob);
+                }
             };
 
             mediaRecorder.start();
@@ -157,23 +160,26 @@ const ChatPage = () => {
 
     const stopRecording = () => {
         if (mediaRecorderRef.current && isRecording) {
-            mediaRecorderRef.current.stop();
-            setIsRecording(false);
             if (recordingIntervalRef.current) {
                 clearInterval(recordingIntervalRef.current);
             }
+            mediaRecorderRef.current.stop();
+            setIsRecording(false);
         }
     };
 
     const cancelRecording = () => {
         if (mediaRecorderRef.current && isRecording) {
-            mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
-            setIsRecording(false);
-            setRecordingDuration(0);
+            // Clear chunks FIRST so onstop won't send
+            audioChunksRef.current = [];
+            // Clear interval
             if (recordingIntervalRef.current) {
                 clearInterval(recordingIntervalRef.current);
             }
-            audioChunksRef.current = [];
+            // Stop recording
+            mediaRecorderRef.current.stop();
+            setIsRecording(false);
+            setRecordingDuration(0);
         }
     };
 
