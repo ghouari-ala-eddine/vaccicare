@@ -266,7 +266,16 @@
 
 @media (max-width: 480px) {
     .navbar-title {
-        display: none;
+        display: inline;
+        font-size: 1rem;
+    }
+
+    .navbar-logo {
+        font-size: 1.4rem;
+    }
+
+    .navbar-brand {
+        gap: 6px;
     }
 
     .navbar-auth .btn {
