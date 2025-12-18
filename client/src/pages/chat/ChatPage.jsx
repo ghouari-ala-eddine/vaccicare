@@ -245,10 +245,11 @@ const ChatPage = () => {
     };
 
     // Audio Player Component
-    const AudioMessage = ({ audioData, duration }) => {
+    const AudioMessage = ({ audioData, duration: savedDuration }) => {
         const audioRef = useRef(null);
         const [isPlaying, setIsPlaying] = useState(false);
         const [currentTime, setCurrentTime] = useState(0);
+        const [audioDuration, setAudioDuration] = useState(savedDuration || 0);
 
         const togglePlay = () => {
             if (audioRef.current) {
@@ -261,6 +262,12 @@ const ChatPage = () => {
             }
         };
 
+        const handleLoadedMetadata = () => {
+            if (audioRef.current && audioRef.current.duration && isFinite(audioRef.current.duration)) {
+                setAudioDuration(Math.round(audioRef.current.duration));
+            }
+        };
+
         return (
             <div className="audio-message">
                 <audio
@@ -268,6 +275,7 @@ const ChatPage = () => {
                     src={audioData}
                     onEnded={() => setIsPlaying(false)}
                     onTimeUpdate={(e) => setCurrentTime(e.target.currentTime)}
+                    onLoadedMetadata={handleLoadedMetadata}
                 />
                 <button className="audio-play-btn" onClick={togglePlay}>
                     {isPlaying ? '⏸️' : '▶️'}
@@ -283,7 +291,9 @@ const ChatPage = () => {
                     </div>
                 </div>
                 <span className="audio-duration">
-                    {formatDuration(duration || 0)}
+                    {isPlaying
+                        ? formatDuration(Math.round(currentTime))
+                        : formatDuration(audioDuration)}
                 </span>
             </div>
         );
