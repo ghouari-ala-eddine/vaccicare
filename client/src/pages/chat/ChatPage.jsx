@@ -123,11 +123,13 @@ const ChatPage = () => {
 
     // Voice Recording Functions
     const isCancelledRef = useRef(false);
+    const durationRef = useRef(0);
 
     const startRecording = async () => {
         try {
             console.log('🎤 Starting recording...');
             isCancelledRef.current = false;
+            durationRef.current = 0;
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             const mediaRecorder = new MediaRecorder(stream);
             mediaRecorderRef.current = mediaRecorder;
@@ -141,28 +143,27 @@ const ChatPage = () => {
             };
 
             mediaRecorder.onstop = async () => {
-                console.log('⏹️ Recording stopped, cancelled:', isCancelledRef.current);
+                const finalDuration = durationRef.current;
+                console.log('⏹️ Recording stopped, cancelled:', isCancelledRef.current, 'duration:', finalDuration);
                 stream.getTracks().forEach(track => track.stop());
 
                 if (!isCancelledRef.current && audioChunksRef.current.length > 0) {
                     const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-                    console.log('📤 Sending voice message, size:', audioBlob.size);
-                    await sendVoiceMessage(audioBlob);
+                    console.log('📤 Sending voice message, size:', audioBlob.size, 'duration:', finalDuration);
+                    await sendVoiceMessageWithDuration(audioBlob, finalDuration);
                 } else {
                     console.log('🚫 Recording was cancelled, not sending');
                 }
             };
 
-            mediaRecorder.start(1000); // Get data every 1 second
+            mediaRecorder.start(1000);
             setIsRecording(true);
             setRecordingDuration(0);
 
-            // Start timer
-            let seconds = 0;
             recordingIntervalRef.current = setInterval(() => {
-                seconds += 1;
-                console.log('⏱️ Timer:', seconds);
-                setRecordingDuration(seconds);
+                durationRef.current += 1;
+                console.log('⏱️ Timer:', durationRef.current);
+                setRecordingDuration(durationRef.current);
             }, 1000);
 
             console.log('✅ Recording started');
@@ -173,7 +174,7 @@ const ChatPage = () => {
     };
 
     const stopRecording = () => {
-        console.log('📤 Stop recording (send)');
+        console.log('📤 Stop recording (send), duration:', durationRef.current);
         if (mediaRecorderRef.current && isRecording) {
             isCancelledRef.current = false;
             if (recordingIntervalRef.current) {
@@ -190,6 +191,7 @@ const ChatPage = () => {
         if (mediaRecorderRef.current && isRecording) {
             isCancelledRef.current = true;
             audioChunksRef.current = [];
+            durationRef.current = 0;
             if (recordingIntervalRef.current) {
                 clearInterval(recordingIntervalRef.current);
                 recordingIntervalRef.current = null;
@@ -200,10 +202,10 @@ const ChatPage = () => {
         }
     };
 
-    const sendVoiceMessage = async (audioBlob) => {
+    const sendVoiceMessageWithDuration = async (audioBlob, duration) => {
         if (!selectedConversation) return;
 
-        const duration = recordingDuration; // Capture duration before async operations
+        console.log('📨 sendVoiceMessageWithDuration, duration:', duration);
         setSendingMessage(true);
 
         try {
@@ -211,12 +213,14 @@ const ChatPage = () => {
             reader.readAsDataURL(audioBlob);
             reader.onloadend = async () => {
                 const base64Audio = reader.result;
+                console.log('📤 Calling API with audioDuration:', duration);
                 await chatAPI.sendMessage(selectedConversation._id, {
                     messageType: 'audio',
                     audioData: base64Audio,
                     audioDuration: duration
                 });
                 setRecordingDuration(0);
+                durationRef.current = 0;
                 await fetchMessages(selectedConversation._id);
                 fetchConversations();
                 setSendingMessage(false);
