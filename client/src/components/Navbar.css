@@ -267,7 +267,7 @@
 @media (max-width: 480px) {
     .navbar-title {
         display: inline;
-        font-size: 1rem;
+        font-size: 1.15rem;
     }
 
     .navbar-logo {
