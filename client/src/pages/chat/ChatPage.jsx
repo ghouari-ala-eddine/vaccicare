@@ -156,17 +156,21 @@ const ChatPage = () => {
                 }
             };
 
-            mediaRecorder.start(1000);
+            // Start timer FIRST before recording
             setIsRecording(true);
             setRecordingDuration(0);
+            durationRef.current = 0;
 
             recordingIntervalRef.current = setInterval(() => {
-                durationRef.current += 1;
-                console.log('⏱️ Timer:', durationRef.current);
+                durationRef.current = durationRef.current + 1;
+                console.log('⏱️ Timer tick:', durationRef.current);
                 setRecordingDuration(durationRef.current);
             }, 1000);
 
-            console.log('✅ Recording started');
+            // Then start recording
+            mediaRecorder.start(1000);
+
+            console.log('✅ Recording started, interval ID:', recordingIntervalRef.current);
         } catch (error) {
             console.error('❌ Error starting recording:', error);
             alert(t('chat.microphoneError') || 'Microphone access denied');
