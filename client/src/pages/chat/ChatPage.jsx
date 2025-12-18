@@ -164,11 +164,16 @@ const ChatPage = () => {
             setRecordingDuration(0);
             durationRef.current = 0;
 
-            recordingIntervalRef.current = setInterval(() => {
+            console.log('🕐 Setting up interval...');
+
+            const intervalId = window.setInterval(function () {
                 durationRef.current = durationRef.current + 1;
-                console.log('⏱️ Timer tick:', durationRef.current);
+                console.log('⏱️ TICK:', durationRef.current);
                 setRecordingDuration(durationRef.current);
             }, 1000);
+
+            recordingIntervalRef.current = intervalId;
+            console.log('🕐 Interval set with ID:', intervalId);
 
             // Then start recording
             mediaRecorder.start(1000);
