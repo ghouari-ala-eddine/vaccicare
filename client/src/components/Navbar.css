@@ -134,10 +134,7 @@
 .user-role {
     font-size: 0.7rem;
     font-weight: 600;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-600);
 }
 
 /* Auth Buttons */
