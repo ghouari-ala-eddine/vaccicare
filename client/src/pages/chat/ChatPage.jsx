@@ -40,9 +40,8 @@ const ChatPage = () => {
         }
     }, [selectedConversation]);
 
-    useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
+    // Don't auto-scroll on message refresh - only scroll when sending new message
+    // The scrollToBottom is called manually after sending
 
     // Auto-refresh messages every 5 seconds
     useEffect(() => {
