@@ -325,15 +325,9 @@
         display: block;
     }
 
+    /* Overlay is conditionally rendered, so just show it when present */
     .mobile-menu-overlay {
         display: block;
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .mobile-menu-overlay.active {
-        opacity: 1;
-        pointer-events: auto;
     }
 }
 
@@ -397,8 +391,26 @@
     right: auto;
 }
 
+.rtl .mobile-link {
+    text-align: right;
+    flex-direction: row-reverse;
+}
+
 .rtl .mobile-link:hover {
     transform: translateX(-4px);
+}
+
+.rtl .mobile-menu-links {
+    direction: rtl;
+}
+
+.rtl .mobile-menu-header {
+    flex-direction: row-reverse;
+}
+
+.rtl .mobile-user-info {
+    flex-direction: row-reverse;
+    text-align: right;
 }
 
 .rtl .user-info {
