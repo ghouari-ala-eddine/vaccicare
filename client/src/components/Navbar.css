@@ -315,6 +315,39 @@
 
 /* ========== Responsive ========== */
 
+/* Laptop screens (14" etc) */
+@media (max-width: 1280px) {
+    .navbar-container {
+        padding: 0 var(--spacing-lg);
+        gap: var(--spacing-lg);
+    }
+
+    .navbar-menu {
+        gap: 4px;
+        max-width: 550px;
+    }
+
+    .navbar-link {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+        gap: 4px;
+    }
+
+    .navbar-user {
+        gap: var(--spacing-sm);
+    }
+
+    .navbar-user .btn {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    .user-info {
+        display: none;
+    }
+}
+
+/* Tablet - Switch to mobile menu */
 @media (max-width: 1024px) {
     .desktop-only {
         display: none !important;
