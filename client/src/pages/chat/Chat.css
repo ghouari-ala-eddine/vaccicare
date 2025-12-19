@@ -468,6 +468,10 @@
 }
 
 /* RTL Support */
+.rtl .chat-page {
+    direction: rtl;
+}
+
 .rtl .chat-sidebar {
     border-right: none;
     border-left: 1px solid #eee;
@@ -475,7 +479,11 @@
 
 .rtl .conversation-item.active {
     border-left: none;
-    border-right: 3px solid var(--primary);
+    border-right: 3px solid var(--primary-500);
+}
+
+.rtl .conv-meta {
+    align-items: flex-start;
 }
 
 .rtl .message.sent {
@@ -488,8 +496,54 @@
     border-bottom-right-radius: 6px;
 }
 
+.rtl .message-time {
+    text-align: left;
+}
+
+.rtl .message.received .message-time {
+    text-align: right;
+}
+
+.rtl .doctor-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
 .rtl .doctor-item:hover {
     transform: translateX(-5px);
+}
+
+.rtl .doctor-details {
+    align-items: flex-end;
+}
+
+.rtl .chat-header-info {
+    flex-direction: row-reverse;
+}
+
+.rtl .sidebar-header {
+    flex-direction: row-reverse;
+}
+
+/* RTL Modal Fix - Critical for Arabic */
+.rtl .modal-overlay {
+    direction: rtl;
+}
+
+.rtl .modal {
+    direction: rtl;
+}
+
+.rtl .modal-header {
+    flex-direction: row-reverse;
+}
+
+.rtl .modal-title {
+    flex-direction: row-reverse;
+}
+
+.rtl .doctors-list-chat {
+    direction: rtl;
 }
 
 /* Mobile Responsive */
