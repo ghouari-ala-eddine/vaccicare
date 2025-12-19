@@ -14,7 +14,24 @@ const generateToken = (id) => {
 // @access  Public
 const register = async (req, res) => {
     try {
-        const { name, email, password, role, phone, specialty } = req.body;
+        const { name, email, password, role, phone, specialty, adminKey } = req.body;
+
+        // CRITICAL SECURITY: Block admin registration from public signup
+        // Admin can only be created if the correct ADMIN_KEY is provided
+        if (role === 'admin') {
+            // Check for admin key from environment variable
+            const validAdminKey = process.env.ADMIN_REGISTRATION_KEY;
+
+            if (!validAdminKey || adminKey !== validAdminKey) {
+                return res.status(403).json({
+                    message: 'Vous n\'êtes pas autorisé à créer un compte administrateur.'
+                });
+            }
+        }
+
+        // Only allow 'parent' or 'doctor' roles for public registration
+        const allowedRoles = ['parent', 'doctor'];
+        const userRole = allowedRoles.includes(role) ? role : 'parent';
 
         // Check if user exists
         const userExists = await User.findOne({ email });
@@ -27,7 +44,7 @@ const register = async (req, res) => {
             name,
             email,
             password,
-            role: role || 'parent',
+            role: role === 'admin' && adminKey === process.env.ADMIN_REGISTRATION_KEY ? 'admin' : userRole,
             phone,
             specialty: role === 'doctor' ? specialty : undefined
         });

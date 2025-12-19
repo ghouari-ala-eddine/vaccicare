@@ -93,13 +93,7 @@ const Register = () => {
                             >
                                 👨‍⚕️ {t('auth.doctor')}
                             </button>
-                            <button
-                                type="button"
-                                className={`role-btn ${formData.role === 'admin' ? 'active' : ''}`}
-                                onClick={() => setFormData({ ...formData, role: 'admin' })}
-                            >
-                                🔑 {t('auth.admin')}
-                            </button>
+                            {/* Admin registration is blocked - only parent and doctor can register publicly */}
                         </div>
                     </div>
 
