@@ -1,5 +1,7 @@
 .dashboard {
     padding: var(--spacing-xl) 0;
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 .dashboard-header {
@@ -14,12 +16,14 @@
 .dashboard-header h1 {
     font-size: 1.75rem;
     margin-bottom: var(--spacing-xs);
+    word-wrap: break-word;
 }
 
 .header-actions {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
+    flex-wrap: wrap;
 }
 
 .today-date {
@@ -118,6 +122,8 @@
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
     padding: var(--spacing-xl);
+    overflow: hidden;
+    max-width: 100%;
 }
 
 .dashboard-section.full-width {
@@ -129,18 +135,27 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
 }
 
 .section-header h2 {
     font-size: 1.1rem;
     font-weight: 600;
+    word-wrap: break-word;
 }
 
 /* Empty State */
 .empty-state {
     text-align: center;
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
     color: var(--text-secondary);
+    max-width: 100%;
+}
+
+.empty-state p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .empty-icon {

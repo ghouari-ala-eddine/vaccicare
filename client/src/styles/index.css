@@ -238,17 +238,20 @@ textarea {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 var(--spacing-xl);
+  overflow-x: hidden;
 }
 
 .page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 .page-content {
   flex: 1;
   padding: var(--spacing-2xl) 0;
+  overflow-x: hidden;
 }
 
 /* ===== Typography ===== */
