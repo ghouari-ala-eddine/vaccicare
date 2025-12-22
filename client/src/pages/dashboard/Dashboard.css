@@ -541,6 +541,59 @@
         align-items: flex-start;
         gap: 4px;
     }
+
+    /* Appointment Cards - Mobile */
+    .appointment-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .appointment-card.doctor-view {
+        padding: var(--spacing-md);
+    }
+
+    .appointment-time {
+        min-width: auto;
+        width: 100%;
+        text-align: center;
+    }
+
+    .appointment-info {
+        width: 100%;
+    }
+
+    .appointment-card .btn {
+        width: 100%;
+        margin-top: var(--spacing-sm);
+    }
+
+    /* Dashboard Sections */
+    .dashboard-section {
+        padding: var(--spacing-md);
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .section-header h2 {
+        font-size: 1rem;
+    }
+
+    /* Child Card */
+    .child-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .child-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -582,5 +635,38 @@
     .table-actions .btn {
         width: 100%;
         font-size: 0.75rem;
+    }
+
+    /* Small screen appointment cards */
+    .appointment-time .time {
+        font-size: 0.9rem;
+    }
+
+    .appointment-info h4 {
+        font-size: 0.9rem;
+    }
+
+    .appointment-info p {
+        font-size: 0.8rem;
+    }
+
+    /* Pending items */
+    .pending-info h4 {
+        font-size: 0.9rem;
+    }
+
+    .pending-info p {
+        font-size: 0.8rem;
+    }
+
+    .pending-actions {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .pending-actions .btn {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 0.8rem;
     }
 }
